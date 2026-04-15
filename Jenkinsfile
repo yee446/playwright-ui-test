@@ -10,16 +10,16 @@ pipeline {
         
         stage('Setup Environment') {
             steps {
-                // 使用完整的 Python 路径
-                bat '"C:\\Users\\yee\\Downloads\\python.exe" -m venv venv'
-                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\Downloads\\Scripts\\pip.exe" install -r requirements.txt'
-                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\Downloads\\Scripts\\playwright.exe" install'
+                // 使用 Python 39 的绝对路径
+                bat '"C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" -m venv venv'
+                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\pip.exe" install -r requirements.txt'
+                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\playwright.exe" install'
             }
         }
         
         stage('Run Tests') {
             steps {
-                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\Downloads\\Scripts\\pytest.exe" tests/ --html=reports/report.html --self-contained-html'
+                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\pytest.exe" tests/ --html=reports/report.html --self-contained-html'
             }
         }
     }
