@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Web UI 自动化测试框架
 
 基于 Playwright + pytest + Python 的 Web UI 自动化测试框架。
@@ -152,3 +153,6 @@ pytest tests/test_google_search.py::test_google_search
 - **HTML 报告**: 通过「HTML 报告」链接查看详细的测试结果
 - **测试结果趋势**: 通过「测试结果」查看历史测试趋势
 - **构建历史**: 查看每次构建的状态和日志
+=======
+# playwright-ui-test
+>>>>>>> 25c4041eadb96bf23ba908853e5a89ed4767a2b7

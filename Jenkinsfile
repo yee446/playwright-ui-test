@@ -8,6 +8,7 @@ pipeline {
             }
         }
         
+<<<<<<< HEAD
         stage('Setup Environment') {
             steps {
                 bat 'python -m venv venv'
@@ -36,3 +37,16 @@ pipeline {
         }
     }
 }
+=======
+        stage('Run Tests') {
+            steps {
+                bat '''
+                    @echo off
+                    chcp 65001
+                    "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" -m pytest
+                '''
+            }
+        }
+    }
+}
+>>>>>>> 25c4041eadb96bf23ba908853e5a89ed4767a2b7
