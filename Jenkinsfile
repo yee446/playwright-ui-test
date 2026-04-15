@@ -10,33 +10,27 @@ pipeline {
         
         stage('Setup Environment') {
             steps {
-                // 只在虚拟环境不存在时创建
+                // 创建虚拟环境
                 bat 'if not exist venv ( "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" -m venv venv )'
                 
-                // 安装依赖（关键修复：用 activate.bat）
-                bat 'call venv\\Scripts\\activate.bat && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\pip.exe" install -r requirements.txt'
+                // 直接安装依赖，不读 requirements.txt（解决报错！）
+                bat 'call venv\\Scripts\\activate.bat && pip install pytest playwright'
                 
                 // 安装浏览器
-                bat 'call venv\\Scripts\\activate.bat && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\playwright.exe" install --with-deps chromium'
+                bat 'call venv\\Scripts\\activate.bat && playwright install chromium'
             }
         }
         
         stage('Run Tests') {
             steps {
-                bat 'call venv\\Scripts\\activate.bat && pytest tests/ --html=reports/report.html --self-contained-html'
+                bat 'call venv\\Scripts\\activate.bat && pytest'
             }
         }
     }
     
     post {
         always {
-            archiveArtifacts artifacts: 'reports/**', fingerprint: true
-        }
-        success {
-            echo 'Tests passed successfully!'
-        }
-        failure {
-            echo 'Tests failed!'
+            echo '构建完成！'
         }
     }
 }
