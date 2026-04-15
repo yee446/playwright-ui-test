@@ -1,46 +1,38 @@
 pipeline {
     agent any
+    tools {
+        python 'Python' // 关键：让 Jenkins 识别系统 Python
+    }
     environment {
         PYTHONIOENCODING = 'UTF-8'
     }
     stages {
+        stage('拉取代码') {
+            steps {
+                git branch: 'main', url: 'https://github.com/yee446/playwright-ui-test.git'
+            }
+        }
         stage('安装依赖') {
             steps {
-                echo '>>> 开始安装项目依赖'
                 bat '''
-                    @echo off
-                    chcp 65001
-                    python -m pip install --upgrade pip
-                    python -m pip install -r requirements.txt
-                    python -m playwright install chrome
-                    python -m playwright install-deps
+                    py -m pip install --upgrade pip
+                    py -m pip install -r requirements.txt
+                    py -m playwright install chrome
+                    py -m playwright install-deps
                 '''
             }
         }
-        stage('执行自动化测试') {
+        stage('执行测试') {
             steps {
-                echo '>>> 开始执行 UI 自动化测试'
                 bat '''
-                    @echo off
-                    chcp 65001
-                    python -m pytest --alluredir=./report/xml --junitxml=./report/junit.xml
+                    py -m pytest --alluredir=report/xml
                 '''
-            }
-            post {
-                always {
-                    allure(
-                        includeProperties: false,
-                        jdk: '',
-                        results: [[path: 'report/xml']]
-                    )
-                    junit 'report/junit.xml'
-                }
             }
         }
     }
     post {
         always {
-            echo '>>> 流水线执行完成！'
+            allure results: [[path: 'report/xml']]
         }
     }
 }
