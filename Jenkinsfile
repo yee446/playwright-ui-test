@@ -10,15 +10,16 @@ pipeline {
         
         stage('Setup Environment') {
             steps {
-                bat 'python -m venv venv'
-                bat 'venv\\Scripts\\Activate.ps1 && pip install -r requirements.txt'
-                bat 'venv\\Scripts\\Activate.ps1 && playwright install'
+                // 使用完整的 Python 路径
+                bat '"C:\\Users\\yee\\Downloads\\python.exe" -m venv venv'
+                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\Downloads\\Scripts\\pip.exe" install -r requirements.txt'
+                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\Downloads\\Scripts\\playwright.exe" install'
             }
         }
         
         stage('Run Tests') {
             steps {
-                bat 'venv\\Scripts\\Activate.ps1 && pytest tests/ --html=reports/report.html --self-contained-html'
+                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\Downloads\\Scripts\\pytest.exe" tests/ --html=reports/report.html --self-contained-html'
             }
         }
     }
