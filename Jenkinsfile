@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    tools {
-        python 'Python' // 关键：让 Jenkins 识别系统 Python
-    }
     environment {
         PYTHONIOENCODING = 'UTF-8'
     }
@@ -15,17 +12,20 @@ pipeline {
         stage('安装依赖') {
             steps {
                 bat '''
-                    py -m pip install --upgrade pip
-                    py -m pip install -r requirements.txt
-                    py -m playwright install chrome
-                    py -m playwright install-deps
+                    @echo off
+                    chcp 65001
+                    "C:\\Python311\\python.exe" -m pip install --upgrade pip
+                    "C:\\Python311\\python.exe" -m pip install -r requirements.txt
+                    "C:\\Python311\\python.exe" -m playwright install chrome
                 '''
             }
         }
         stage('执行测试') {
             steps {
                 bat '''
-                    py -m pytest --alluredir=report/xml
+                    @echo off
+                    chcp 65001
+                    "C:\\Python311\\python.exe" -m pytest --alluredir=report/xml
                 '''
             }
         }
