@@ -10,10 +10,12 @@ pipeline {
         
         stage('Setup Environment') {
             steps {
-                // 使用 Python 39 的绝对路径
-                bat '"C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" -m venv venv'
+                // 只在虚拟环境不存在时创建
+                bat 'if not exist venv ( "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" -m venv venv )'
+                // 安装依赖
                 bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\pip.exe" install -r requirements.txt'
-                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\playwright.exe" install'
+                // 只在浏览器未安装时执行
+                bat 'venv\\Scripts\\Activate.ps1 && "C:\\Users\\yee\\AppData\\Local\\Programs\\Python\\Python39\\Scripts\\playwright.exe" install --with-deps chromium'
             }
         }
         
@@ -27,7 +29,6 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'reports/**', fingerprint: true
-            junit 'reports/junit-results.xml'
         }
         success {
             echo 'Tests passed successfully!'
